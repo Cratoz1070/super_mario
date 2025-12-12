@@ -100,5 +100,5 @@ biv::Mario* ConsoleUIFactory::get_mario() {
 // 									PRIVATE
 // ----------------------------------------------------------------------------
 void ConsoleUIFactory::create_game_map() {
-	game_map = new ConsoleGameMap(30, 200);
+	game_map = new ConsoleGameMap(29, 120);
 }
