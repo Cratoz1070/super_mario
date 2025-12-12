@@ -15,7 +15,7 @@
 #include <thread>
 
 #include "console_ui_factory.hpp"
-#include "third_level.hpp"
+#include "first_level.hpp"
 #include "game.hpp"
 #include "game_level.hpp"
 #include "game_map.hpp"
@@ -32,7 +32,7 @@ int main() {
 	biv::Game game;
 	biv::UIFactory* ui_factory = new biv::ConsoleUIFactory(&game);
 	biv::GameMap* game_map = ui_factory->get_game_map();
-	biv::GameLevel* game_level = new biv::ThirdLevel(ui_factory);
+	biv::GameLevel* game_level = new biv::FirstLevel(ui_factory);
 	biv::Mario* mario = ui_factory->get_mario();
 	
 	biv::os::UserInput user_input;

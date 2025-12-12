@@ -31,7 +31,7 @@ void ThirdLevel::init_data() {
 	ui_factory->create_box({25, 15}, 5, 3);
 
 	ui_factory->create_flying_enemy({85, 20}, 3, 2);
-	ui_factory->create_enemy({150, 20}, 3, 2);
+	ui_factory->create_jumping_enemy({170, 20}, 3, 2);
 
     ui_factory->create_ship({210, 20}, 10, 7);
 }
