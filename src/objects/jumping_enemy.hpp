@@ -8,8 +8,6 @@
 
 namespace biv {
 	class JumpingEnemy : public RectMapMovableAdapter, public Movable, public Collisionable {
-		protected:
-			static constexpr float JUMP_SPEED = 0;
 		public:
 			JumpingEnemy(const Coord& top_left, const int width, const int height);
 
