@@ -1,4 +1,3 @@
-// qt_ui_object.cpp
 #include "qt_ui_object.hpp"
 
 using biv::QtUIObject;
@@ -11,7 +10,6 @@ QtUIObject::QtUIObject(Rect* obj, const QColor& color)
 QRectF QtUIObject::boundingRect() const {
     if (!game_object) return QRectF();
 
-    // Вычисляем ширину и высоту через координаты
     int width = game_object->get_right() - game_object->get_left();
     int height = game_object->get_bottom() - game_object->get_top();
 
@@ -33,10 +31,9 @@ void QtUIObject::updatePosition() {
 
 void QtUIObject::updateGraphics() {
     updatePosition();
-    update();  // Перерисовка
+    update();  
 }
 
 QVariant QtUIObject::itemChange(GraphicsItemChange change, const QVariant &value) {
-    // Обработка изменений элемента (например, изменение позиции)
     return QGraphicsItem::itemChange(change, value);
 }

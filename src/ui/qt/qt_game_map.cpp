@@ -1,4 +1,3 @@
-// qt_game_map.cpp
 #include "qt_game_map.hpp"
 #include <QGraphicsRectItem>
 
@@ -15,17 +14,14 @@ QtGameMap::~QtGameMap() {
 }
 
 void QtGameMap::initBackground() {
-    // Создаем фон: небо и вода
-    QBrush skyBrush(QColor(135, 206, 235));  // Светло-голубой
-    QBrush waterBrush(QColor(65, 105, 225));  // Королевский синий
+    QBrush skyBrush(QColor(135, 206, 235));  
+    QBrush waterBrush(QColor(65, 105, 225));  
 
-    // Небо (верхние 26 строк)
     sky_bg = new QGraphicsRectItem(0, 0, GameMap::width, GameMap::height - 3);
     sky_bg->setBrush(skyBrush);
     sky_bg->setPen(Qt::NoPen);
     addItem(sky_bg);
 
-    // Вода (нижние 3 строки)
     water_bg = new QGraphicsRectItem(0, GameMap::height - 3, GameMap::width, 3);
     water_bg->setBrush(waterBrush);
     water_bg->setPen(Qt::NoPen);
@@ -33,11 +29,8 @@ void QtGameMap::initBackground() {
 }
 
 void QtGameMap::clear() noexcept {
-    // Не очищаем полностью сцену, а только удаляем игровые объекты
-    // Фон сохраняем
     QList<QGraphicsItem*> items_list = items();
     for (QGraphicsItem* item : items_list) {
-        // Удаляем только игровые объекты, не фон
         if (item != sky_bg && item != water_bg) {
             removeItem(item);
             delete item;
@@ -46,7 +39,6 @@ void QtGameMap::clear() noexcept {
 }
 
 void QtGameMap::refresh() noexcept {
-    // В Qt обновление происходит автоматически через update()
     update();
 }
 
@@ -55,7 +47,7 @@ void QtGameMap::remove_objs() {
 }
 
 void QtGameMap::show() const noexcept {
-    // В Qt показ осуществляется через QGraphicsView, поэтому здесь ничего не делаем
+
 }
 
 void QtGameMap::addGraphicsItem(QGraphicsItem* item) {

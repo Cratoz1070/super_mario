@@ -1,4 +1,3 @@
-// qt_ui_factory.hpp
 #pragma once
 
 #include "qt_box.hpp"
@@ -25,7 +24,6 @@ private:
     std::vector<QtJumpingEnemy*> jumping_enemies;
     std::vector<QtMoney*> moneys;
 
-    // Для хранения всех Qt объектов
     std::vector<QtUIObject*> all_qt_objects;
 
 public:
@@ -60,7 +58,6 @@ public:
     GameMap* get_game_map() override;
     Mario* get_mario() override;
 
-    // Дополнительные методы
     void updateAllGraphics();
     QtGameMap* get_qt_game_map() { return game_map; }
 

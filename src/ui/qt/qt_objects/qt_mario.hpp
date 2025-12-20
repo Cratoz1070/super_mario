@@ -1,4 +1,3 @@
-// qt_mario.hpp
 #pragma once
 
 #include "mario.hpp"

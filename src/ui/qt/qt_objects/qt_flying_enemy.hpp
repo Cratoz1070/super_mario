@@ -1,4 +1,3 @@
-// qt_flying_enemy.hpp
 #pragma once
 
 #include "flying_enemy.hpp"

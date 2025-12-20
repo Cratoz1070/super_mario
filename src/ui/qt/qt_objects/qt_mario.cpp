@@ -1,4 +1,3 @@
-// qt_mario.cpp
 #include "qt_mario.hpp"
 
 using biv::QtMario;

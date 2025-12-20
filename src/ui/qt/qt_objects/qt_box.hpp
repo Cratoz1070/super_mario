@@ -1,4 +1,3 @@
-// qt_box.hpp
 #pragma once
 
 #include "box.hpp"

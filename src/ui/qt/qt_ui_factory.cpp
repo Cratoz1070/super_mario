@@ -1,4 +1,3 @@
-// qt_ui_factory.cpp - полный аналог console_ui_factory.cpp
 #include "qt_ui_factory.hpp"
 #include <algorithm>
 
@@ -14,24 +13,15 @@ QtUIFactory::~QtUIFactory() {
 }
 
 void QtUIFactory::clear_data() {
-    qDebug() << "QtUIFactory::clear_data() - starting";
 
-    // ВАЖНО: Сначала удаляем объекты из сцены и игровой логики,
-    // но НЕ удаляем их вручную, так как сцена сделает это
-
-    // 1. Удаляем все объекты из сцены
     if (game_map) {
-        game_map->remove_objs(); // Этот метод удалит все QGraphicsItem
-        qDebug() << "Removed objects from game map";
+        game_map->remove_objs(); 
     }
 
-    // 2. Очищаем игровую логику (только векторы, не удаляем объекты)
     if (game) {
         game->remove_objs();
-        qDebug() << "Removed objects from game logic";
     }
 
-    // 3. Очищаем наши векторы (но НЕ удаляем объекты - они уже удалены сценой)
     all_qt_objects.clear();
     boxes.clear();
     full_boxes.clear();
@@ -41,10 +31,7 @@ void QtUIFactory::clear_data() {
     jumping_enemies.clear();
     moneys.clear();
 
-    // 4. Обнуляем указатель на Марио (объект уже удален сценой)
     mario = nullptr;
-
-    qDebug() << "QtUIFactory::clear_data() - completed";
 }
 
 void QtUIFactory::add_qt_object(QtUIObject* obj) {
@@ -116,7 +103,6 @@ void QtUIFactory::create_full_box(
 void QtUIFactory::create_mario(
     const Coord& top_left, const int width, const int height
     ) {
-    // Удаляем старого Марио
     if (mario) {
         game->remove_collisionable(mario);
         game->remove_movable(mario);
@@ -131,7 +117,6 @@ void QtUIFactory::create_mario(
         delete mario;
     }
 
-    // Создаем нового
     mario = new QtMario(top_left, width, height);
     add_qt_object(mario);
 

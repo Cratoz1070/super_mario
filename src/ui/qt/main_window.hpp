@@ -1,4 +1,3 @@
-// main_window.hpp
 #pragma once
 
 #include <QMainWindow>
@@ -23,8 +22,8 @@ private:
     QTimer* game_timer;
 
     bool keys[256] = {false};
-    bool move_map_left_pressed = false;   // Движение карты ВЛЕВО ('D' в консоли)
-    bool move_map_right_pressed = false;  // Движение карты ВПРАВО ('A' в консоли)
+    bool move_map_left_pressed = false;   
+    bool move_map_right_pressed = false;  
     bool jump_pressed = false;
 
     void restart_level();

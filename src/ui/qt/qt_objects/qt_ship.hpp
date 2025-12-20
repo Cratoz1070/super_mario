@@ -1,4 +1,3 @@
-// qt_ship.hpp
 #pragma once
 
 #include "ship.hpp"

@@ -1,4 +1,3 @@
-// qt_full_box.hpp
 #pragma once
 
 #include "full_box.hpp"
@@ -14,7 +13,6 @@ public:
         );
     void updateGraphics() override;
 
-    // Переопределяем paint для отображения состояния
     void paint(QPainter* painter,
                const QStyleOptionGraphicsItem* option,
                QWidget* widget) override;

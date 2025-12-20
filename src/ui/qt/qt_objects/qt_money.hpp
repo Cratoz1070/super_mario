@@ -1,4 +1,3 @@
-// qt_money.hpp
 #pragma once
 
 #include "money.hpp"

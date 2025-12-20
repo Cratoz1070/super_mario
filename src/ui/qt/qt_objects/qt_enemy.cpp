@@ -1,4 +1,3 @@
-// qt_enemy.cpp
 #include "qt_enemy.hpp"
 
 using biv::QtEnemy;

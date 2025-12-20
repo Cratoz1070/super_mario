@@ -1,4 +1,3 @@
-// main_window.cpp
 #include "main_window.hpp"
 #include <QMessageBox>
 #include <thread>
@@ -13,9 +12,6 @@ MainWindow::MainWindow(QWidget* parent)
     ui_factory(new QtUIFactory(&game)),
     current_level(new FirstLevel(ui_factory)) {
 
-    // УРОВЕНЬ УЖЕ СОЗДАЛ ОБЪЕКТЫ В СВОЕМ КОНСТРУКТОРЕ
-    // current_level->create();  // <-- УДАЛИ ЭТУ СТРОКУ
-
     setWindowTitle("Super Mario Qt");
     resize(1200, 600);
 
@@ -26,11 +22,9 @@ MainWindow::MainWindow(QWidget* parent)
     game_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     game_view->setRenderHint(QPainter::Antialiasing);
 
-    // Увеличиваем масштаб, чтобы было видно маленькие объекты
     game_view->scale(8, 8);
     setCentralWidget(game_view);
 
-    // Проверяем, что Марио создан
     Mario* mario = ui_factory->get_mario();
     if (!mario) {
         qDebug() << "WARNING: Mario not created!";
@@ -48,30 +42,24 @@ MainWindow::~MainWindow() {
 
 void MainWindow::keyPressEvent(QKeyEvent* event) {
     switch(event->key()) {
-    case Qt::Key_Left:  // Стрелка ВЛЕВО = карта ВПРАВО (как 'A')
+    case Qt::Key_Left:  
         move_map_right_pressed = true;
-        qDebug() << "Left arrow pressed -> Move map RIGHT";
         break;
-    case Qt::Key_Right:  // Стрелка ВПРАВО = карта ВЛЕВО (как 'D')
+    case Qt::Key_Right:  
         move_map_left_pressed = true;
-        qDebug() << "Right arrow pressed -> Move map LEFT";
         break;
     case Qt::Key_Space:
         jump_pressed = true;
-        qDebug() << "Space pressed -> Jump";
         break;
     case Qt::Key_Escape:
         game.finish();
         close();
         break;
-    // Также можно оставить поддержку оригинальных клавиш
     case Qt::Key_A:
         move_map_right_pressed = true;
-        qDebug() << "A pressed -> Move map RIGHT";
         break;
     case Qt::Key_D:
         move_map_left_pressed = true;
-        qDebug() << "D pressed -> Move map LEFT";
         break;
     }
 }
@@ -143,7 +131,6 @@ void MainWindow::handleUserInput(biv::os::UserInput user_input) {
 }
 
 void MainWindow::updateGameState() {
-    // Точная копия из main.cpp
     game.move_objs_horizontally();
     game.check_horizontally_static_collisions();
 
@@ -183,24 +170,20 @@ void MainWindow::gameLoop() {
         return;
     }
 
-    // Получаем Марио и карту
     Mario* mario = ui_factory->get_mario();
     GameMap* game_map = ui_factory->get_game_map();
 
     if (!mario || !game_map) return;
 
-    // Отладочный вывод (можно уменьшить частоту)
     static int frame = 0;
     frame++;
-    if (frame % 30 == 0) {  // Каждые 30 кадров
+    if (frame % 30 == 0) { 
         qDebug() << "Frame" << frame
                  << "| Mario: (" << mario->get_left() << "," << mario->get_top() << ")"
                  << "| Active:" << mario->is_active();
     }
 
-    // Обработка непрерывного ввода (движение)
     if (move_map_left_pressed) {
-        // Движение карты ВЛЕВО (стрелка ВПРАВО или 'D')
         mario->move_map_left();
         if (!game.check_static_collisions(mario)) {
             game.move_map_left();
@@ -209,7 +192,6 @@ void MainWindow::gameLoop() {
     }
 
     if (move_map_right_pressed) {
-        // Движение карты ВПРАВО (стрелка ВЛЕВО или 'A')
         mario->move_map_right();
         if (!game.check_static_collisions(mario)) {
             game.move_map_right();
@@ -217,13 +199,11 @@ void MainWindow::gameLoop() {
         mario->move_map_left();
     }
 
-    // Обработка прыжка (одноразовое действие)
     if (jump_pressed) {
         mario->jump();
         jump_pressed = false;
     }
 
-    // Обновление состояния игры (физика)
     game.move_objs_horizontally();
     game.check_horizontally_static_collisions();
 
@@ -231,11 +211,7 @@ void MainWindow::gameLoop() {
     game.check_mario_collision();
     game.check_vertically_static_collisions();
 
-    // ======== ПРОВЕРКА СМЕРТИ МАРИО ========
-    // ТОЧНО ТАК ЖЕ КАК В ОРИГИНАЛЬНОМ main.cpp
     if (game_map->is_below_map(mario->get_top()) || !mario->is_active()) {
-        qDebug() << "=== MARIO DIED ===";
-        qDebug() << "Reason:";
         if (game_map->is_below_map(mario->get_top())) {
             qDebug() << "- Below map: y =" << mario->get_top()
             << ", map height =" << 29;
@@ -246,16 +222,14 @@ void MainWindow::gameLoop() {
 
         restart_level();
 
-        // После перезапуска получаем нового Марио
         mario = ui_factory->get_mario();
         if (mario) {
             qDebug() << "New mario at: (" << mario->get_left() << "," << mario->get_top() << ")";
         }
 
-        return; // Прерываем текущий кадр
+        return; 
     }
 
-    // ======== ПРОВЕРКА КОНЦА УРОВНЯ ========
     if (game.is_level_end()) {
         qDebug() << "=== LEVEL COMPLETED ===";
 
@@ -268,66 +242,49 @@ void MainWindow::gameLoop() {
         return;
     }
 
-    // Обновление графики
     ui_factory->updateAllGraphics();
     game_view->viewport()->update();
 }
 
 void MainWindow::restart_level() {
-    qDebug() << "=== RESTARTING LEVEL ===";
-
-    // Останавливаем таймер
     game_timer->stop();
 
     try {
-        // 1. Очищаем фабрику (это удалит все объекты из сцены)
         if (ui_factory) {
             ui_factory->clear_data();
-            qDebug() << "Factory cleared";
         }
 
-        // 2. Перезапускаем уровень через restart() который вызовет init_data()
         if (current_level) {
             current_level->restart();
-            qDebug() << "Level restarted";
         }
 
-        // 3. Перезапускаем состояние игры
         game.start_level();
-        qDebug() << "Game level started";
 
-        // 4. Проверяем, что Марио создан
         Mario* mario = ui_factory->get_mario();
         if (mario) {
             qDebug() << "New Mario created at: (" << mario->get_left() << "," << mario->get_top() << ")";
         } else {
             qDebug() << "ERROR: Mario not created after restart!";
-            // Создаем Марио вручную как запасной вариант
             ui_factory->create_mario(Coord{.x = 10, .y =10}, 10, 10);
         }
 
     } catch (const std::exception& e) {
         qDebug() << "EXCEPTION in restart_level: " << e.what();
         QMessageBox::critical(this, "Error", QString("Failed to restart level: ") + e.what());
-        // Не закрываем окно, а пытаемся продолжить
         game_timer->start(16);
         return;
     } catch (...) {
-        qDebug() << "UNKNOWN EXCEPTION in restart_level";
         QMessageBox::critical(this, "Error", "Unknown error restarting level");
         game_timer->start(16);
         return;
     }
 
-    // 5. Пауза 1 секунда и перезапуск таймера
     QTimer::singleShot(1000, this, [this]() {
-        qDebug() << "Resuming game timer...";
         game_timer->start(16);
     });
 }
 
 void MainWindow::advance_to_next_level() {
-    qDebug() << "=== ADVANCING TO NEXT LEVEL ===";
 
     game_timer->stop();
 
@@ -337,13 +294,10 @@ void MainWindow::advance_to_next_level() {
             delete current_level;
             current_level = next_level;
 
-            // Перезапускаем уровень в игре
             game.start_level();
 
-            // Пауза перед новым уровнем
             QTimer::singleShot(1000, this, [this]() {
                 game_timer->start(16);
-                qDebug() << "Next level started!";
             });
         }
     }
