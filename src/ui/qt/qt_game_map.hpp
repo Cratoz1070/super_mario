@@ -26,6 +26,8 @@ public:
     int get_map_height() const { return GameMap::height; }
     int get_map_width() const { return GameMap::width; }
 
+    void centerViewOn(qreal x, qreal y, QGraphicsView* view);
+
 private:
     void initBackground();
 };

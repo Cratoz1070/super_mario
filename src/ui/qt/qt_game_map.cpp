@@ -14,17 +14,24 @@ QtGameMap::~QtGameMap() {
 }
 
 void QtGameMap::initBackground() {
-    QBrush skyBrush(QColor(135, 206, 235));  
-    QBrush waterBrush(QColor(65, 105, 225));  
+    QBrush skyBrush(QColor(135, 206, 235));
+    QBrush waterBrush(QColor(65, 105, 225));
 
-    sky_bg = new QGraphicsRectItem(0, 0, GameMap::width, GameMap::height - 3);
+    int sceneWidth = 2000;
+    int sceneHeight = 2000;
+
+    setSceneRect(0, 0, sceneWidth, sceneHeight);
+
+    sky_bg = new QGraphicsRectItem(0, 0, sceneWidth, sceneHeight - 3);
     sky_bg->setBrush(skyBrush);
     sky_bg->setPen(Qt::NoPen);
+    sky_bg->setZValue(-1000);
     addItem(sky_bg);
 
-    water_bg = new QGraphicsRectItem(0, GameMap::height - 3, GameMap::width, 3);
+    water_bg = new QGraphicsRectItem(0, sceneHeight - 3, sceneWidth, 3);
     water_bg->setBrush(waterBrush);
     water_bg->setPen(Qt::NoPen);
+    water_bg->setZValue(-999);
     addItem(water_bg);
 }
 
@@ -51,6 +58,9 @@ void QtGameMap::show() const noexcept {
 }
 
 void QtGameMap::addGraphicsItem(QGraphicsItem* item) {
+    if (item != sky_bg && item != water_bg) {
+        item->setZValue(0);
+    }
     addItem(item);
 }
 
